@@ -1,0 +1,155 @@
+import * as React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {GameEngine} from 'react-native-game-engine';
+import Matter from 'matter-js';
+import Constants from '../util/constants';
+import Plane from '../components/Plane';
+import Wall from '../components/Wall';
+import Physics from '../util/physics';
+
+export const randomBetween = (min, max) => {
+  return Math.floor(Math.random() * (min - max + 1) + min);
+};
+
+export const generateHazards = () => {
+  let topHazardHeight = randomBetween(100, Constants.MAX_HEIGHT / 2 - 100);
+  let bottomHazardHeight =
+    Constants.MAX_HEIGHT - topHazardHeight - Constants.GAP_SIZE;
+  let sizes = [topHazardHeight, bottomHazardHeight];
+
+  if (Math.random() < 1) {
+    sizes = sizes.reverse();
+  }
+  return sizes;
+};
+
+const setupWorld = () => {
+  let engine = Matter.Engine.create({enableSleeping: false});
+  let world = engine.world;
+  let plane = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH / 4,
+    Constants.MAX_HEIGHT / 2,
+    50,
+    50
+  );
+  let floor = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH / 2,
+    Constants.MAX_HEIGHT,
+    Constants.MAX_WIDTH,
+    50,
+    {isStatic: true},
+  );
+  let ceiling = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH / 2,
+    25,
+    Constants.MAX_WIDTH,
+    20,
+    {isStatic: true},
+  );
+  let [hazardHeight1, hazardHeight2] = generateHazards();
+  let hazard1 = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH - Constants.HAZARD_WIDTH / 2,
+    hazardHeight1 / 2,
+    Constants.HAZARD_WIDTH,
+    hazardHeight1,
+    {isStatic: true},
+  );
+  let hazard2 = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH - Constants.HAZARD_WIDTH / 2,
+    Constants.MAX_HEIGHT - hazardHeight2 / 2,
+    Constants.HAZARD_WIDTH,
+    hazardHeight2,
+    {isStatic: true},
+  );
+  let [hazardHeight3, hazardHeight4] = generateHazards();
+  let hazard3 = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH * 2 - Constants.HAZARD_WIDTH / 2,
+    hazardHeight3 / 2,
+    Constants.HAZARD_WIDTH,
+    hazardHeight3,
+    {isStatic: true},
+  );
+  let hazard4 = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH * 2 - Constants.HAZARD_WIDTH / 2,
+    Constants.MAX_HEIGHT - hazardHeight4 / 2,
+    Constants.HAZARD_WIDTH,
+    hazardHeight4,
+    {isStatic: true},
+  );
+
+  Matter.World.add(world, [
+    hazard1,
+    hazard2,
+    hazard3,
+    hazard4,
+    floor,
+    ceiling,
+    plane,
+  ]);
+
+  return {
+    physics: {engine: engine, world: world},
+    plane: {body: plane, size: [50, 50], color: 'blue', renderer: Plane},
+    ceiling: {
+      body: ceiling,
+      size: [Constants.MAX_WIDTH, 50],
+      color: 'grey',
+      renderer: Wall,
+    },
+    floor: {
+      body: floor,
+      size: [Constants.MAX_WIDTH, 50],
+      color: 'grey',
+      renderer: Wall,
+    },
+    hazard1: {
+      body: hazard1,
+      size: [Constants.HAZARD_WIDTH, hazardHeight1],
+      color: 'red',
+      renderer: Wall,
+    },
+    hazard2: {
+      body: hazard2,
+      size: [Constants.HAZARD_WIDTH, hazardHeight2],
+      color: 'red',
+      renderer: Wall,
+    },
+    hazard3: {
+      body: hazard3,
+      size: [Constants.HAZARD_WIDTH, hazardHeight3],
+      color: 'red',
+      renderer: Wall,
+    },
+    hazard4: {
+      body: hazard4,
+      size: [Constants.HAZARD_WIDTH, hazardHeight4],
+      color: 'red',
+      renderer: Wall,
+    },
+  };
+};
+
+let gameEngine = null;
+let entities = setupWorld();
+
+const Menu = () => {
+  return (
+    <View style={styles.container}>
+      <GameEngine
+        ref={(ref) => (gameEngine = ref)}
+        style={styles.gameContainer}
+        systems={[Physics]}
+        entities={entities}></GameEngine>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  gameContainer: {},
+});
+
+export default Menu;
