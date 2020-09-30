@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
 import Constants from '../util/constants';
@@ -141,6 +141,10 @@ const Menu = () => {
       running === true ? flipGameState(false) : flipGameState(true);
     }
   };
+  const reset = () => {
+    gameEngine.swap(setupWorld());
+    flipGameState(true);
+  };
   return (
     <View style={styles.container}>
       <GameEngine
@@ -150,6 +154,15 @@ const Menu = () => {
         onEvent={onEvent}
         systems={[Physics]}
         entities={entities}></GameEngine>
+      {!running && (
+        <TouchableOpacity
+          onPress={() => reset()}
+          style={styles.fullScreenButton}>
+          <View>
+            <Text style={styles.gameOverText}>GAME OVER</Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -159,7 +172,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  gameContainer: {},
+  gameContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  gameOverText: {
+    color: 'white',
+    fontSize: 48,
+  },
+  fullScreenButton: {
+    position: 'absolute',
+    height: Constants.MAX_HEIGHT,
+    width: Constants.MAX_WIDTH,
+    flex: 1,
+    backgroundColor: 'black',
+    opacity: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default Menu;

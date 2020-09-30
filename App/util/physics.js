@@ -7,7 +7,7 @@ const Physics = (entities, {touches, time}) => {
   touches
     .filter((touch) => touch.type === 'press')
     .forEach((touch) => {
-      Matter.Body.applyForce(plane, plane.position, {x: 0.0, y: -0.1});
+      Matter.Body.applyForce(plane, plane.position, {x: 0.0, y: -0.09});
     });
 
   for (let i = 1; i <= 4; i++) {
