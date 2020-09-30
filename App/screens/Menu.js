@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, useState} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
 import Constants from '../util/constants';
@@ -8,7 +8,7 @@ import Wall from '../components/Wall';
 import Physics from '../util/physics';
 
 export const randomBetween = (min, max) => {
-  return Math.floor(Math.random() * (min - max + 1) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 export const generateHazards = () => {
@@ -17,9 +17,6 @@ export const generateHazards = () => {
     Constants.MAX_HEIGHT - topHazardHeight - Constants.GAP_SIZE;
   let sizes = [topHazardHeight, bottomHazardHeight];
 
-  if (Math.random() < 1) {
-    sizes = sizes.reverse();
-  }
   return sizes;
 };
 
@@ -30,7 +27,7 @@ const setupWorld = () => {
     Constants.MAX_WIDTH / 4,
     Constants.MAX_HEIGHT / 2,
     50,
-    50
+    50,
   );
   let floor = Matter.Bodies.rectangle(
     Constants.MAX_WIDTH / 2,
@@ -47,6 +44,7 @@ const setupWorld = () => {
     {isStatic: true},
   );
   let [hazardHeight1, hazardHeight2] = generateHazards();
+  let [hazardHeight3, hazardHeight4] = generateHazards();
   let hazard1 = Matter.Bodies.rectangle(
     Constants.MAX_WIDTH - Constants.HAZARD_WIDTH / 2,
     hazardHeight1 / 2,
@@ -61,7 +59,6 @@ const setupWorld = () => {
     hazardHeight2,
     {isStatic: true},
   );
-  let [hazardHeight3, hazardHeight4] = generateHazards();
   let hazard3 = Matter.Bodies.rectangle(
     Constants.MAX_WIDTH * 2 - Constants.HAZARD_WIDTH / 2,
     hazardHeight3 / 2,
@@ -78,13 +75,13 @@ const setupWorld = () => {
   );
 
   Matter.World.add(world, [
+    floor,
+    ceiling,
+    plane,
     hazard1,
     hazard2,
     hazard3,
     hazard4,
-    floor,
-    ceiling,
-    plane,
   ]);
 
   return {
@@ -133,11 +130,13 @@ let gameEngine = null;
 let entities = setupWorld();
 
 const Menu = () => {
+  const [running, startGame] = useState(false);
   return (
     <View style={styles.container}>
       <GameEngine
         ref={(ref) => (gameEngine = ref)}
         style={styles.gameContainer}
+        running={running}
         systems={[Physics]}
         entities={entities}></GameEngine>
     </View>
