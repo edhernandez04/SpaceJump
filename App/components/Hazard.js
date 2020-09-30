@@ -9,8 +9,7 @@ export default class Hazard extends Component {
     const x = this.props.body.position.x - width / 2;
     const y = this.props.body.position.y - height / 2;
 
-    const hazardRatio = 50 / width;
-    const hazardHeight = hazardRatio * height
+    const hazardHeight = 0.4 * height
     const hazardIterations = Math.ceil(height / hazardHeight);
 
     return (

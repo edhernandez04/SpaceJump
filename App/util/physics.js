@@ -6,7 +6,7 @@ import Platform from '../components/Platform';
 let tick = 0;
 let pose = 1;
 let hazards = 0;
-let platforms = 0
+let platforms = 0;
 
 export const randomBetween = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -52,7 +52,7 @@ export const addHazardAtLocation = (x, world, entities) => {
 
   let platform2 = Matter.Bodies.rectangle(
     x,
-    Constants.MAX_HEIGHT - 50 - hazard2Height - platformHeight,
+    Constants.MAX_HEIGHT - 25 - hazard2Height - platformHeight / 2,
     platformWidth,
     platformHeight,
     {isStatic: true},
@@ -60,7 +60,7 @@ export const addHazardAtLocation = (x, world, entities) => {
 
   let hazard2 = Matter.Bodies.rectangle(
     x,
-    Constants.MAX_HEIGHT - 50 - hazard2Height / 2,
+    Constants.MAX_HEIGHT - 25 - hazard2Height / 2,
     Constants.HAZARD_WIDTH,
     hazard2Height,
     {isStatic: true},
@@ -68,19 +68,23 @@ export const addHazardAtLocation = (x, world, entities) => {
 
   Matter.World.add(world, [hazard1, platform1, hazard2, platform2]);
   entities['hazard' + (hazards + 1)] = {
-    body: hazard1, renderer: Hazard
-  }
+    body: hazard1,
+    renderer: Hazard,
+  };
   entities['hazard' + (hazards + 2)] = {
-    body: hazard2, renderer: Hazard
-  }
+    body: hazard2,
+    renderer: Hazard,
+  };
   entities['platform' + (platforms + 1)] = {
-    body: platform1, renderer: Platform
-  }
+    body: platform1,
+    renderer: Platform,
+  };
   entities['platform' + (platforms + 2)] = {
-    body: platform2, renderer: Platform
-  }
+    body: platform2,
+    renderer: Platform,
+  };
 
-  hazards += 2
+  hazards += 2;
 };
 
 const Physics = (entities, {touches, time}) => {
@@ -93,8 +97,16 @@ const Physics = (entities, {touches, time}) => {
     .forEach((touch) => {
       if (world.gravity.y === 0.0) {
         world.gravity.y = 1.2;
-
-        addHazardAtLocation(Constants.MAX_WIDTH - 100, world, entities)
+        addHazardAtLocation(
+          Constants.MAX_WIDTH * 2 + Constants.HAZARD_WIDTH / 2,
+          world,
+          entities,
+        );
+        addHazardAtLocation(
+          Constants.MAX_WIDTH * 3 + Constants.HAZARD_WIDTH / 2,
+          world,
+          entities,
+        );
       }
       if (!hadTouches) {
         hadTouches = true;
@@ -105,7 +117,31 @@ const Physics = (entities, {touches, time}) => {
   Matter.Engine.update(engine, time.delta);
 
   Object.keys(entities).forEach((key) => {
-    if (key.indexOf('floor') === 0) {
+    if (key.indexOf('hazard') === 0) {
+      Matter.Body.translate(entities[key].body, {x: -2, y: 0});
+      console.log(key)
+      if (
+        key.indexOf('platform') !== -1 &&
+        parseInt(key.replace('hazard', '')) % 2 === 0
+      ) {
+        console.log('first layer')
+        if (
+          entities[key].body.position.z <=
+          -1 * (Constants.HAZARD_WIDTH / 2)
+        ) {
+          console.log('inner inner')
+          delete entities['platform'];
+          delete entities['hazard'];
+          delete entities['platform'];
+          delete entities['hazard'];
+          addHazardAtLocation(
+            Constants.MAX_WIDTH * 2 + Constants.HAZARD_WIDTH / 2,
+            world,
+            entities,
+          );
+        }
+      }
+    } else if (key.indexOf('floor') === 0) {
       if (entities[key].body.position.x <= (-1 * Constants.MAX_WIDTH) / 2) {
         Matter.Body.setPosition(entities[key].body, {
           x: Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
