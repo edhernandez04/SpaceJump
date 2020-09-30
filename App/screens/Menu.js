@@ -1,88 +1,38 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
 import Constants from '../util/constants';
 import Plane from '../components/Plane';
-import Wall from '../components/Wall';
+import Floor from '../components/Floor';
 import Physics from '../util/physics';
-
-export const randomBetween = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-export const generateHazards = () => {
-  let topHazardHeight = randomBetween(100, Constants.MAX_HEIGHT / 2 - 100);
-  let bottomHazardHeight =
-    Constants.MAX_HEIGHT - topHazardHeight - Constants.GAP_SIZE;
-  let sizes = [topHazardHeight, bottomHazardHeight];
-
-  return sizes;
-};
 
 const setupWorld = () => {
   let engine = Matter.Engine.create({enableSleeping: false});
   let world = engine.world;
+  world.gravity.y = 0.0;
   let plane = Matter.Bodies.rectangle(
     Constants.MAX_WIDTH / 4,
     Constants.MAX_HEIGHT / 2,
-    50,
-    50,
+    Constants.PLANE_WIDTH,
+    Constants.PLANE_HEIGHT,
   );
-  let floor = Matter.Bodies.rectangle(
+  let floor1 = Matter.Bodies.rectangle(
     Constants.MAX_WIDTH / 2,
     Constants.MAX_HEIGHT,
-    Constants.MAX_WIDTH,
+    Constants.MAX_WIDTH + 4,
     50,
     {isStatic: true},
   );
-  let ceiling = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH / 2,
-    25,
-    Constants.MAX_WIDTH,
-    20,
-    {isStatic: true},
-  );
-  let [hazardHeight1, hazardHeight2] = generateHazards();
-  let [hazardHeight3, hazardHeight4] = generateHazards();
-  let hazard1 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH - Constants.HAZARD_WIDTH / 2,
-    hazardHeight1 / 2,
-    Constants.HAZARD_WIDTH,
-    hazardHeight1,
-    {isStatic: true},
-  );
-  let hazard2 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH - Constants.HAZARD_WIDTH / 2,
-    Constants.MAX_HEIGHT - hazardHeight2 / 2,
-    Constants.HAZARD_WIDTH,
-    hazardHeight2,
-    {isStatic: true},
-  );
-  let hazard3 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH * 2 - Constants.HAZARD_WIDTH / 2,
-    hazardHeight3 / 2,
-    Constants.HAZARD_WIDTH,
-    hazardHeight3,
-    {isStatic: true},
-  );
-  let hazard4 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH * 2 - Constants.HAZARD_WIDTH / 2,
-    Constants.MAX_HEIGHT - hazardHeight4 / 2,
-    Constants.HAZARD_WIDTH,
-    hazardHeight4,
+  let floor2 = Matter.Bodies.rectangle(
+    Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
+    Constants.MAX_HEIGHT,
+    Constants.MAX_WIDTH + 4,
+    50,
     {isStatic: true},
   );
 
-  Matter.World.add(world, [
-    floor,
-    ceiling,
-    plane,
-    hazard1,
-    hazard2,
-    hazard3,
-    hazard4,
-  ]);
+  Matter.World.add(world, [floor1, floor2, plane]);
 
   Matter.Events.on(engine, 'collisionStart', (event) => {
     let pairs = event.pairs;
@@ -91,43 +41,9 @@ const setupWorld = () => {
 
   return {
     physics: {engine: engine, world: world},
-    plane: {body: plane, size: [50, 50], color: 'blue', renderer: Plane},
-    ceiling: {
-      body: ceiling,
-      size: [Constants.MAX_WIDTH, 50],
-      color: 'grey',
-      renderer: Wall,
-    },
-    floor: {
-      body: floor,
-      size: [Constants.MAX_WIDTH, 50],
-      color: 'grey',
-      renderer: Wall,
-    },
-    hazard1: {
-      body: hazard1,
-      size: [Constants.HAZARD_WIDTH, hazardHeight1],
-      color: 'red',
-      renderer: Wall,
-    },
-    hazard2: {
-      body: hazard2,
-      size: [Constants.HAZARD_WIDTH, hazardHeight2],
-      color: 'red',
-      renderer: Wall,
-    },
-    hazard3: {
-      body: hazard3,
-      size: [Constants.HAZARD_WIDTH, hazardHeight3],
-      color: 'red',
-      renderer: Wall,
-    },
-    hazard4: {
-      body: hazard4,
-      size: [Constants.HAZARD_WIDTH, hazardHeight4],
-      color: 'red',
-      renderer: Wall,
-    },
+    plane: {body: plane, pose: 1, renderer: Plane},
+    floor1: {body: floor1, renderer: Floor},
+    floor2: {body: floor2, renderer: Floor},
   };
 };
 
@@ -145,8 +61,13 @@ const Menu = () => {
     gameEngine.swap(setupWorld());
     flipGameState(true);
   };
+  const imageRepeater = Math.ceil(Constants.MAX_WIDTH / Constants.MAX_HEIGHT);
   return (
     <View style={styles.container}>
+      <Image
+        style={{width: Constants.MAX_WIDTH, height: Constants.MAX_HEIGHT}}
+        source={require('../assets/Space_1.png')}
+      />
       <GameEngine
         ref={(ref) => (gameEngine = ref)}
         style={styles.gameContainer}
@@ -171,6 +92,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: Constants.MAX_WIDTH,
+    height: Constants.MAX_HEIGHT,
   },
   gameContainer: {
     position: 'absolute',

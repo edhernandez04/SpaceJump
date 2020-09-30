@@ -5,4 +5,6 @@ export default Constants = {
   MAX_HEIGHT: Dimensions.get('screen').height,
   GAP_SIZE: 200,
   HAZARD_WIDTH: 100,
+  PLANE_WIDTH: 90,
+  PLANE_HEIGHT: 50,
 };
