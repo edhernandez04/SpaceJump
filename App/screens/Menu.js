@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {View, StyleSheet, useState} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
 import Constants from '../util/constants';
@@ -84,6 +84,11 @@ const setupWorld = () => {
     hazard4,
   ]);
 
+  Matter.Events.on(engine, 'collisionStart', (event) => {
+    let pairs = event.pairs;
+    gameEngine.dispatch({type: 'game-over'});
+  });
+
   return {
     physics: {engine: engine, world: world},
     plane: {body: plane, size: [50, 50], color: 'blue', renderer: Plane},
@@ -130,13 +135,19 @@ let gameEngine = null;
 let entities = setupWorld();
 
 const Menu = () => {
-  const [running, startGame] = useState(false);
+  const [running, flipGameState] = useState(true);
+  const onEvent = (e) => {
+    if (e.type === 'game-over') {
+      running === true ? flipGameState(false) : flipGameState(true);
+    }
+  };
   return (
     <View style={styles.container}>
       <GameEngine
         ref={(ref) => (gameEngine = ref)}
         style={styles.gameContainer}
         running={running}
+        onEvent={onEvent}
         systems={[Physics]}
         entities={entities}></GameEngine>
     </View>
