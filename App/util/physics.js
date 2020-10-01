@@ -119,23 +119,22 @@ const Physics = (entities, {touches, time}) => {
   Object.keys(entities).forEach((key) => {
     if (key.indexOf('hazard') === 0) {
       Matter.Body.translate(entities[key].body, {x: -2, y: 0});
-      console.log(key)
       if (
-        key.indexOf('platform') !== -1 &&
+        key.indexOf('hazard') !== -1 &&
         parseInt(key.replace('hazard', '')) % 2 === 0
       ) {
-        console.log('first layer')
         if (
-          entities[key].body.position.z <=
+          entities[key].body.position.x <=
           -1 * (Constants.HAZARD_WIDTH / 2)
         ) {
-          console.log('inner inner')
-          delete entities['platform'];
-          delete entities['hazard'];
-          delete entities['platform'];
-          delete entities['hazard'];
+          let platformIndex = parseInt(key.replace('platform', ''))
+          let hazardIndex = parseInt(key.replace('hazard', ''))
+          delete entities['platform' + (platformIndex - 1)];
+          delete entities['hazard' + (hazardIndex - 1)];
+          delete entities['platform' + platformIndex];
+          delete entities['hazard' + hazardIndex];
           addHazardAtLocation(
-            Constants.MAX_WIDTH * 2 + Constants.HAZARD_WIDTH / 2,
+            Constants.MAX_WIDTH * 1.8 + Constants.HAZARD_WIDTH / 2,
             world,
             entities,
           );
