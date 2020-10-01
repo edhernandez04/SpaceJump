@@ -11,7 +11,6 @@ export default class Hazard extends Component {
 
     const hazardHeight = 0.4 * height
     const hazardIterations = Math.ceil(height / hazardHeight);
-
     return (
       <View
         style={{

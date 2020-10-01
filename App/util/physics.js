@@ -12,6 +12,11 @@ export const randomBetween = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+export const resetHazards = () => {
+  hazards = 0;
+  platforms = 0;
+};
+
 export const generateHazards = () => {
   let topHazardHeight = randomBetween(100, Constants.MAX_HEIGHT / 2 - 100);
   let bottomHazardHeight =
@@ -70,24 +75,29 @@ export const addHazardAtLocation = (x, world, entities) => {
   entities['hazard' + (hazards + 1)] = {
     body: hazard1,
     renderer: Hazard,
+    scored: false
   };
   entities['hazard' + (hazards + 2)] = {
     body: hazard2,
     renderer: Hazard,
+    scored: false
   };
   entities['platform' + (platforms + 1)] = {
     body: platform1,
     renderer: Platform,
+    scored: false
   };
   entities['platform' + (platforms + 2)] = {
     body: platform2,
     renderer: Platform,
+    scored: false
   };
 
   hazards += 2;
+  platforms += 2;
 };
 
-const Physics = (entities, {touches, time}) => {
+const Physics = (entities, {touches, time, dispatch}) => {
   let engine = entities.physics.engine;
   let world = entities.physics.world;
   let plane = entities.plane.body;
@@ -117,18 +127,22 @@ const Physics = (entities, {touches, time}) => {
   Matter.Engine.update(engine, time.delta);
 
   Object.keys(entities).forEach((key) => {
-    if (key.indexOf('hazard') === 0) {
+    if (key.indexOf('hazard') === 0 && entities.hasOwnProperty(key)) {
       Matter.Body.translate(entities[key].body, {x: -2, y: 0});
       if (
         key.indexOf('hazard') !== -1 &&
         parseInt(key.replace('hazard', '')) % 2 === 0
       ) {
+        if (entities[key].body.position.x <= plane.position.x && !entities[key].scored) {
+          entities[key].scored = true
+          dispatch({type: 'score'});
+        }
         if (
           entities[key].body.position.x <=
           -1 * (Constants.HAZARD_WIDTH / 2)
         ) {
-          let platformIndex = parseInt(key.replace('platform', ''))
-          let hazardIndex = parseInt(key.replace('hazard', ''))
+          let platformIndex = parseInt(key.replace('platform', ''));
+          let hazardIndex = parseInt(key.replace('hazard', ''));
           delete entities['platform' + (platformIndex - 1)];
           delete entities['hazard' + (hazardIndex - 1)];
           delete entities['platform' + platformIndex];

@@ -5,7 +5,7 @@ import Matter from 'matter-js';
 import Constants from '../util/constants';
 import Plane from '../components/Plane';
 import Floor from '../components/Floor';
-import Physics from '../util/physics';
+import Physics, {resetHazards} from '../util/physics';
 
 const setupWorld = () => {
   let engine = Matter.Engine.create({enableSleeping: false});
@@ -52,14 +52,19 @@ let entities = setupWorld();
 
 const Menu = () => {
   const [running, flipGameState] = useState(true);
+  const [score, addToScore] = useState(0);
   const onEvent = (e) => {
     if (e.type === 'game-over') {
       running === true ? flipGameState(false) : flipGameState(true);
+    } else if (e.type === 'score') {
+      addToScore(score + 1);
     }
   };
   const reset = () => {
+    resetHazards();
     gameEngine.swap(setupWorld());
     flipGameState(true);
+    addToScore(0);
   };
   const imageRepeater = Math.ceil(Constants.MAX_WIDTH / Constants.MAX_HEIGHT);
   return (
@@ -75,12 +80,15 @@ const Menu = () => {
         onEvent={onEvent}
         systems={[Physics]}
         entities={entities}></GameEngine>
+      <Text style={styles.gameScore}>{score}</Text>
       {!running && (
         <TouchableOpacity
           onPress={() => reset()}
           style={styles.fullScreenButton}>
-          <View>
+          <View style={{alignItems: 'center'}}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
+            <Text style={styles.gameSubOverText}>Try Again</Text>
+        
           </View>
         </TouchableOpacity>
       )}
@@ -112,6 +120,20 @@ const styles = StyleSheet.create({
   gameOverText: {
     color: 'white',
     fontSize: 48,
+  },
+  gameSubOverText: {
+    color: 'white',
+    fontSize: 24,
+  },
+  gameScore: {
+    position: 'absolute',
+    color: 'white',
+    fontSize: 72,
+    top: 50,
+    left: Constants.MAX_WIDTH / 2 - 30,
+    textShadowColor: '#444',
+    textShadowOffset: {width: 2, hegj: 2},
+    textShadowRadius: 2,
   },
   fullScreenButton: {
     position: 'absolute',

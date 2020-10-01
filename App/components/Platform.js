@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import {Image} from 'react-native';
 import Images from '../assets/Images';
 
 export default class Platform extends Component {
@@ -19,7 +19,7 @@ export default class Platform extends Component {
           height: height,
         }}
         source={Images.hazardTop}
-        resizeMode="stretch"
+        resizeMode='stretch'
       />
     );
   }
