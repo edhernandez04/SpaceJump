@@ -53,6 +53,7 @@ let entities = setupWorld();
 const Menu = () => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
+
   const onEvent = (e) => {
     if (e.type === 'game-over') {
       running === true ? flipGameState(false) : flipGameState(true);
@@ -60,13 +61,14 @@ const Menu = () => {
       addToScore(score + 1);
     }
   };
+
   const reset = () => {
     resetHazards();
     gameEngine.swap(setupWorld());
     flipGameState(true);
     addToScore(0);
   };
-  const imageRepeater = Math.ceil(Constants.MAX_WIDTH / Constants.MAX_HEIGHT);
+
   return (
     <View style={styles.container}>
       <Image
@@ -88,7 +90,6 @@ const Menu = () => {
           <View style={{alignItems: 'center'}}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
             <Text style={styles.gameSubOverText}>Try Again</Text>
-        
           </View>
         </TouchableOpacity>
       )}

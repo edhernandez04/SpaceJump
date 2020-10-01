@@ -28,6 +28,7 @@ export default class Hazard extends Component {
               style={{width: width, height: hazardHeight}}
               key={index}
               source={Images.hazardBody}
+              resizeMode='stretch'
             />
           );
         })}

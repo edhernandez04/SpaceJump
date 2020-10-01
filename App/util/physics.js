@@ -1,7 +1,7 @@
 import Matter from 'matter-js';
 import Constants from './constants';
 import Hazard from '../components/Hazard';
-import Platform from '../components/Platform';
+import HazardTop from '../components/HazardTop';
 
 let tick = 0;
 let pose = 1;
@@ -36,10 +36,19 @@ export const addHazardAtLocation = (x, world, entities) => {
   let platformHeight = (platformWidth / 100) * 50;
 
   hazard1Height = hazard1Height - platformHeight;
+  hazard2Height = hazard2Height - platformHeight;
 
-  let platform1 = Matter.Bodies.rectangle(
+  let hazardTop1 = Matter.Bodies.rectangle(
     x,
     hazard1Height + platformHeight / 2,
+    platformWidth,
+    platformHeight,
+    {isStatic: true},
+  );
+
+  let hazardTop2 = Matter.Bodies.rectangle(
+    x,
+    Constants.MAX_HEIGHT - 25 - hazard2Height - platformHeight / 2,
     platformWidth,
     platformHeight,
     {isStatic: true},
@@ -53,16 +62,6 @@ export const addHazardAtLocation = (x, world, entities) => {
     {isStatic: true},
   );
 
-  hazard2Height = hazard2Height - platformHeight;
-
-  let platform2 = Matter.Bodies.rectangle(
-    x,
-    Constants.MAX_HEIGHT - 25 - hazard2Height - platformHeight / 2,
-    platformWidth,
-    platformHeight,
-    {isStatic: true},
-  );
-
   let hazard2 = Matter.Bodies.rectangle(
     x,
     Constants.MAX_HEIGHT - 25 - hazard2Height / 2,
@@ -71,26 +70,27 @@ export const addHazardAtLocation = (x, world, entities) => {
     {isStatic: true},
   );
 
-  Matter.World.add(world, [hazard1, platform1, hazard2, platform2]);
+  Matter.World.add(world, [hazard1, hazard2, hazardTop1, hazardTop2]);
+
+  entities['hazardTop' + (platforms + 1)] = {
+    body: hazardTop1,
+    scored: false,
+    renderer: HazardTop,
+  };
+  entities['hazardTop' + (platforms + 2)] = {
+    body: hazardTop2,
+    scored: false,
+    renderer: HazardTop,
+  };
   entities['hazard' + (hazards + 1)] = {
     body: hazard1,
+    scored: false,
     renderer: Hazard,
-    scored: false
   };
   entities['hazard' + (hazards + 2)] = {
     body: hazard2,
+    scored: false,
     renderer: Hazard,
-    scored: false
-  };
-  entities['platform' + (platforms + 1)] = {
-    body: platform1,
-    renderer: Platform,
-    scored: false
-  };
-  entities['platform' + (platforms + 2)] = {
-    body: platform2,
-    renderer: Platform,
-    scored: false
   };
 
   hazards += 2;
@@ -120,7 +120,7 @@ const Physics = (entities, {touches, time, dispatch}) => {
       }
       if (!hadTouches) {
         hadTouches = true;
-        Matter.Body.setVelocity(plane, {x: plane.velocity.x, y: -10});
+        Matter.Body.setVelocity(plane, {x: plane.velocity.x, y: -7});
       }
     });
 
@@ -133,8 +133,11 @@ const Physics = (entities, {touches, time, dispatch}) => {
         key.indexOf('hazard') !== -1 &&
         parseInt(key.replace('hazard', '')) % 2 === 0
       ) {
-        if (entities[key].body.position.x <= plane.position.x && !entities[key].scored) {
-          entities[key].scored = true
+        if (
+          entities[key].body.position.x <= plane.position.x &&
+          !entities[key].scored
+        ) {
+          entities[key].scored = true;
           dispatch({type: 'score'});
         }
         if (

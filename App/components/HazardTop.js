@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Image} from 'react-native';
 import Images from '../assets/Images';
 
-export default class Platform extends Component {
+export default class HazardTop extends Component {
   render() {
     const width = this.props.body.bounds.max.x - this.props.body.bounds.min.x;
     const height = this.props.body.bounds.max.y - this.props.body.bounds.min.y;
@@ -18,8 +18,8 @@ export default class Platform extends Component {
           width: width,
           height: height,
         }}
-        source={Images.hazardTop}
         resizeMode='stretch'
+        source={Images.hazardTop}
       />
     );
   }
