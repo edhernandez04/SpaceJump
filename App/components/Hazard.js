@@ -9,7 +9,7 @@ export default class Hazard extends Component {
     const x = this.props.body.position.x - width / 2;
     const y = this.props.body.position.y - height / 2;
 
-    const hazardHeight = 0.4 * height
+    const hazardHeight = 0.4 * height;
     const hazardIterations = Math.ceil(height / hazardHeight);
     return (
       <View
@@ -28,7 +28,7 @@ export default class Hazard extends Component {
               style={{width: width, height: hazardHeight}}
               key={index}
               source={Images.hazardBody}
-              resizeMode='stretch'
+              resizeMode="stretch"
             />
           );
         })}
