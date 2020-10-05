@@ -7,6 +7,7 @@ export default class Plane extends Component {
     super(props);
     this.animatedValue = new Animated.Value(this.props.body.velocity.y);
   }
+
   render() {
     const width = this.props.body.bounds.max.x - this.props.body.bounds.min.x;
     const height = this.props.body.bounds.max.y - this.props.body.bounds.min.y;
@@ -16,9 +17,10 @@ export default class Plane extends Component {
     this.animatedValue.setValue(this.props.body.velocity.y);
     let rotation = this.animatedValue.interpolate({
       inputRange: [-10, 0, 10, 20],
-      outputRange: ['-20deg', '0deg', '15deg', '45deg'],
+      outputRange: ['-20deg', '0deg', '15deg', '65deg'],
       extrapolate: 'clamp',
     });
+    
     let image = Images['plane' + this.props.pose];
 
     return (

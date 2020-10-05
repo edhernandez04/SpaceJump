@@ -50,11 +50,11 @@ const setupWorld = () => {
 let gameEngine = null;
 let entities = setupWorld();
 
-const Game = props => {
+const Game = (props) => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
 
-  const onEvent = event => {
+  const onEvent = (event) => {
     if (event.type === 'game-over') {
       running === true ? flipGameState(false) : flipGameState(true);
     } else if (event.type === 'score') {
@@ -87,12 +87,17 @@ const Game = props => {
         <View style={styles.fullScreenButton}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
+            <Text style={styles.gameOverText}>{score}</Text>
           </View>
           <View style={styles.gameOverOptions}>
-            <TouchableOpacity onPress={() => reset()}>
+            <TouchableOpacity
+              onPress={() => reset()}
+              style={styles.gameOverButtons}>
               <Text style={styles.gameSubOverText}>Try Again</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Menu')}
+              style={styles.gameOverButtons}>
               <Text style={styles.gameSubOverText}>Menu</Text>
             </TouchableOpacity>
           </View>
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
   gameOverText: {
     color: 'white',
     fontSize: 48,
+    alignItems: 'center',
   },
   gameSubOverText: {
     color: 'white',
@@ -135,6 +141,14 @@ const styles = StyleSheet.create({
   },
   gameOverOptions: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  gameOverButtons: {
+    marginTop: 50,
+    width: 150,
+    backgroundColor: 'tomato',
+    borderRadius: 10,
+    alignItems: 'center',
   },
   gameScore: {
     position: 'absolute',
@@ -154,7 +168,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     opacity: 0.8,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
