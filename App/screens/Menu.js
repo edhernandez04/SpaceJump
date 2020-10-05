@@ -1,17 +1,38 @@
 import React, {useState} from 'react';
-import { View, TextInput, Button, Text } from 'react-native'
+import { View, TextInput, Button, Text, StyleSheet, StatusBar } from 'react-native'
+import ShipSelector from '../components/ShipSelector'
 
 const Menu = props => {
     const [name, changeName] = useState('')
+
     return (
-        <View>
-            <Text>MENU PAGE</Text>
-            <TextInput value={name} onChangeText={changeName} placeholder='NAME' />
-            <Button title='GAME' onPress={() =>
+        <View style={styles.fullScreenMenu}>
+            <StatusBar barStyle="light-content" />
+            <Text style={styles.subHeadingText}>Select Your Ship</Text>
+            <ShipSelector />
+            <TextInput value={name} onChangeText={changeName} placeholder='ENTER NAME' placeholderTextColor='white' />
+            <Button title='START' onPress={() =>
                 props.navigation.navigate('Game')
             }/>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    fullScreenMenu: {
+        position: 'absolute',
+        height: Constants.MAX_HEIGHT,
+        width: Constants.MAX_WIDTH,
+        flex: 1,
+        backgroundColor: 'midnightblue',
+        opacity: 0.8,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      subHeadingText: {
+        color: 'white',
+        fontSize: 24
+      },
+})
 
 export default Menu

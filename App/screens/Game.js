@@ -50,14 +50,14 @@ const setupWorld = () => {
 let gameEngine = null;
 let entities = setupWorld();
 
-const Game = () => {
+const Game = props => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
 
-  const onEvent = (e) => {
-    if (e.type === 'game-over') {
+  const onEvent = event => {
+    if (event.type === 'game-over') {
       running === true ? flipGameState(false) : flipGameState(true);
-    } else if (e.type === 'score') {
+    } else if (event.type === 'score') {
       addToScore(score + 1);
     }
   };
@@ -84,14 +84,19 @@ const Game = () => {
         entities={entities}></GameEngine>
       <Text style={styles.gameScore}>{score}</Text>
       {!running && (
-        <TouchableOpacity
-          onPress={() => reset()}
-          style={styles.fullScreenButton}>
+        <View style={styles.fullScreenButton}>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
-            <Text style={styles.gameSubOverText}>Try Again</Text>
           </View>
-        </TouchableOpacity>
+          <View style={styles.gameOverOptions}>
+            <TouchableOpacity onPress={() => reset()}>
+              <Text style={styles.gameSubOverText}>Try Again</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+              <Text style={styles.gameSubOverText}>Menu</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </View>
   );
@@ -125,6 +130,11 @@ const styles = StyleSheet.create({
   gameSubOverText: {
     color: 'white',
     fontSize: 24,
+    padding: 5,
+    margin: 5,
+  },
+  gameOverOptions: {
+    flexDirection: 'row',
   },
   gameScore: {
     position: 'absolute',

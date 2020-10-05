@@ -8,8 +8,16 @@ const Stack = createStackNavigator();
 const SpaceJumpStack = () => {
   return (
     <Stack.Navigator mode="modal">
-      <Stack.Screen name="Menu" component={Menu} />
-      <Stack.Screen name="Game" component={Game} headerMode="none" />
+      <Stack.Screen
+        name="Menu"
+        component={Menu}
+        options={{headerTitle: 'Space Jump', headerShown: false}}
+      />
+      <Stack.Screen
+        name="Game"
+        component={Game}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
