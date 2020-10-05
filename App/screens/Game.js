@@ -50,7 +50,7 @@ const setupWorld = () => {
 let gameEngine = null;
 let entities = setupWorld();
 
-const Menu = () => {
+const Game = () => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
 
@@ -148,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Menu;
+export default Game;

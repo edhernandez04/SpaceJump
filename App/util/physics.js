@@ -104,7 +104,7 @@ const Physics = (entities, {touches, time, dispatch}) => {
   let hadTouches = false;
   touches
     .filter((touch) => touch.type === 'press')
-    .forEach((touch) => {
+    .forEach(() => {
       if (world.gravity.y === 0.0) {
         world.gravity.y = 1.2;
         addHazardAtLocation(
