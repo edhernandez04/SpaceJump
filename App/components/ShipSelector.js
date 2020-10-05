@@ -5,7 +5,7 @@ import Images from '../assets/Images'
 const ShipSelector = () => {
     return (
         <View>
-            <Text>THIS IS SHIP SELECTOR</Text>
+            <Image source={Images.plane3} style={{height: 50, width: 100}}/>
         </View>
     )
 }
