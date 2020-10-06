@@ -37,64 +37,75 @@ const Menu = (props) => {
 
   const addUser = async () => {
     name && password
-      ? (await firestore().collection('users').add({
-          name: name,
-          password: password,
-          highScore: 0,
-        })).then(checkUser())
+      ? (
+          await firestore().collection('users').add({
+            name: name,
+            password: password,
+            highScore: 0,
+          })
+        ).then(checkUser())
       : alert('Missing Login Information');
   };
 
-  return player.length ? (
-    <View style={styles.fullScreenMenu}>
-      <StatusBar barStyle="light-content" />
-
-      <Text style={styles.subHeadingText}>Select Your Ship</Text>
-      <ShipSelector ship={ship} selectShip={selectShip} />
-      <Button
-        title="START"
-        onPress={() => props.navigation.navigate('Game', {ship: ship})}
-      />
-    </View>
-  ) : (
-    <SafeAreaView>
+  if (player.length > 0) {
+    return (
       <View style={styles.fullScreenMenu}>
-        <Image source={require('../assets/banner.png')} style={styles.banner} />
         <StatusBar barStyle="light-content" />
-        <TextInput
-          color="white"
-          fontSize={48}
-          value={name}
-          onChangeText={changeName}
-          placeholder="ENTER NAME"
-          placeholderTextColor="white"
-          textAlign="center"
-          autoCapitalize="none"
-          borderBottomWidth={4}
-          maxLength={12}
-          style={{width: '75%', height: 100}}
+
+        <Text style={styles.subHeadingText}>Select Your Ship</Text>
+        <ShipSelector ship={ship} selectShip={selectShip} />
+        <Button
+          title="START"
+          onPress={() => props.navigation.navigate('Game', {ship: ship})}
         />
-        <TextInput
-          color="white"
-          fontSize={24}
-          value={password}
-          onChangeText={changePassword}
-          placeholder="PASSWORD"
-          placeholderTextColor="white"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          textAlign="center"
-          borderBottomWidth={4}
-          style={{width: '75%', height: 100}}
-        />
-        <TouchableOpacity
-          onPress={() => checkUser()}
-          style={styles.enterButton}>
-          <Text style={styles.subHeadingText}>ENTER</Text>
-        </TouchableOpacity>
       </View>
-    </SafeAreaView>
-  );
+    );
+  }
+  
+  if (player.length === undefined) {
+    return (
+      <SafeAreaView>
+        <View style={styles.fullScreenMenu}>
+          <Image
+            source={require('../assets/banner.png')}
+            style={styles.banner}
+          />
+          <StatusBar barStyle="light-content" />
+          <TextInput
+            color="white"
+            fontSize={48}
+            value={name}
+            onChangeText={changeName}
+            placeholder="ENTER NAME"
+            placeholderTextColor="white"
+            textAlign="center"
+            autoCapitalize="none"
+            borderBottomWidth={4}
+            maxLength={12}
+            style={{width: '75%', height: 100}}
+          />
+          <TextInput
+            color="white"
+            fontSize={24}
+            value={password}
+            onChangeText={changePassword}
+            placeholder="PASSWORD"
+            placeholderTextColor="white"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            textAlign="center"
+            borderBottomWidth={4}
+            style={{width: '75%', height: 100}}
+          />
+          <TouchableOpacity
+            onPress={() => checkUser()}
+            style={styles.enterButton}>
+            <Text style={styles.subHeadingText}>ENTER</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
