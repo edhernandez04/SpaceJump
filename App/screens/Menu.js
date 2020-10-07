@@ -14,7 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Menu = (props) => {
-  const [player, changePlayer] = useState({});
+  const [player, changePlayer] = useState();
   const [name, changeName] = useState('');
   const [password, changePassword] = useState('');
   const [ship, selectShip] = useState('');
@@ -30,28 +30,30 @@ const Menu = (props) => {
       .get();
     currentPlayer._docs && currentPlayer._docs.length > 0
       ? currentPlayer._docs[0]._data.password === password
-        ? changePlayer(currentPlayer._docs[0]._data) && console.log('here')
+        ? changePlayer(currentPlayer._docs[0]._data)
         : alert('Incorrect Login Information')
       : addUser();
   };
 
   const addUser = async () => {
     name && password
-      ? (
-          await firestore().collection('users').add({
-            name: name,
-            password: password,
-            highScore: 0,
-          })
-        ).then(checkUser())
+      ? await firestore().collection('users').add({
+          name: name,
+          password: password,
+          highScore: 0,
+        })
       : alert('Missing Login Information');
+    checkUser();
   };
 
-  if (player.length > 0) {
+  if (player) {
     return (
       <View style={styles.fullScreenMenu}>
         <StatusBar barStyle="light-content" />
-
+        <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
+        {player.highScore === 0 ? 
+        <Text>Go for a high score!</Text>
+        :<Text>Your Highest Score is {player.highScore}</Text>}
         <Text style={styles.subHeadingText}>Select Your Ship</Text>
         <ShipSelector ship={ship} selectShip={selectShip} />
         <Button
@@ -61,8 +63,8 @@ const Menu = (props) => {
       </View>
     );
   }
-  
-  if (player.length === undefined) {
+
+  if (player === undefined) {
     return (
       <SafeAreaView>
         <View style={styles.fullScreenMenu}>
