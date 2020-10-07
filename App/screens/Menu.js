@@ -51,9 +51,11 @@ const Menu = (props) => {
       <View style={styles.fullScreenMenu}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
-        {player.highScore === 0 ? 
-        <Text>Go for a high score!</Text>
-        :<Text>Your Highest Score is {player.highScore}</Text>}
+        {player.highScore === 0 ? (
+          <Text>Go for a high score!</Text>
+        ) : (
+          <Text>Your Highest Score: {player.highScore}</Text>
+        )}
         <Text style={styles.subHeadingText}>Select Your Ship</Text>
         <ShipSelector ship={ship} selectShip={selectShip} />
         <Button
