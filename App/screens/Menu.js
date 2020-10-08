@@ -19,10 +19,6 @@ const Menu = (props) => {
   const [password, changePassword] = useState('');
   const [ship, selectShip] = useState('');
 
-  useEffect(() => {
-    player;
-  });
-
   const checkUser = async () => {
     const currentPlayer = await firestore()
       .collection('users')
@@ -60,7 +56,7 @@ const Menu = (props) => {
         <ShipSelector ship={ship} selectShip={selectShip} />
         <Button
           title="START"
-          onPress={() => props.navigation.navigate('Game', {ship: ship})}
+          onPress={() => props.navigation.navigate('Game', {ship: ship, player: player})}
         />
       </View>
     );

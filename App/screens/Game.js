@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
@@ -53,6 +53,10 @@ let entities = setupWorld();
 const Game = (props) => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
+
+  useEffect(() => {
+    console.log(props.route.params)
+  });
 
   const onEvent = (event) => {
     if (event.type === 'game-over') {
