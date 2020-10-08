@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -15,6 +15,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Menu = (props) => {
   const [player, changePlayer] = useState();
+  const [refId, changeRefId] = useState('');
   const [name, changeName] = useState('');
   const [password, changePassword] = useState('');
   const [ship, selectShip] = useState('');
@@ -26,7 +27,7 @@ const Menu = (props) => {
       .get();
     currentPlayer._docs && currentPlayer._docs.length > 0
       ? currentPlayer._docs[0]._data.password === password
-        ? changePlayer(currentPlayer._docs[0]._data)
+        ? updateUseState(currentPlayer._docs[0]._data, currentPlayer._docs[0]._ref._documentPath._parts[1])
         : alert('Incorrect Login Information')
       : addUser();
   };
@@ -42,6 +43,11 @@ const Menu = (props) => {
     checkUser();
   };
 
+  const updateUseState = (player, reference) => {
+    changePlayer(player)
+    changeRefId(reference)
+  }
+
   if (player) {
     return (
       <View style={styles.fullScreenMenu}>
@@ -56,7 +62,13 @@ const Menu = (props) => {
         <ShipSelector ship={ship} selectShip={selectShip} />
         <Button
           title="START"
-          onPress={() => props.navigation.navigate('Game', {ship: ship, player: player})}
+          onPress={() =>
+            props.navigation.navigate('Game', {
+              ship: ship,
+              player: player,
+              refId: refId,
+            })
+          }
         />
       </View>
     );

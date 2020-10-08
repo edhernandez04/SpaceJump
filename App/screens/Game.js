@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
+import firestore from '@react-native-firebase/firestore';
 import Constants from '../util/constants';
 import Plane from '../components/Plane';
 import Floor from '../components/Floor';
@@ -54,17 +55,27 @@ const Game = (props) => {
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
 
-  useEffect(() => {
-    console.log(props.route.params)
-  });
-
   const onEvent = (event) => {
     if (event.type === 'game-over') {
       running === true ? flipGameState(false) : flipGameState(true);
+      updatePlayerOnGameOver();
     } else if (event.type === 'score') {
       addToScore(score + 1);
     }
   };
+
+  const updatePlayerOnGameOver = async () => {
+    score > props.route.params.player.highScore
+      ? await firestore()
+          .collection('users')
+          .doc(props.route.params.refId)
+          .update({highScore: score})
+      : null;
+  };
+
+  const updateParamsForRecentScore = () => {
+    props.navigate
+  }
 
   const reset = () => {
     resetHazards();
