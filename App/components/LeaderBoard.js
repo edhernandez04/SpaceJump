@@ -1,35 +1,45 @@
-import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ActivityIndicator} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 const LeaderBoard = () => {
   useEffect(() => {
-      console.log(Leaders)
-    createTopTen();
+    getLeaderData();
   }, []);
 
-  let Leaders = [];
+  const [Leaders, setLeaders] = useState();
 
-  const createTopTen = async () => {
-    const topScores = await firestore().collection('users').get();
-    topScores._docs.forEach((leader) => {
-      Leaders.push(leader._data);
-    });
-    const sortedLeaders = Leaders.sort(function (a, b) {
-      b.highScore > a.highScore ? 1 : -1;
-    });
-    return sortedLeaders;
+  const getLeaderData = async () => {
+    let topPlayers = await firestore().collection('users').get();
+    topPlayers._docs && topPlayers._docs.length > 0
+      ? formatLeaderData(topPlayers)
+      : setTimeout(10000);
   };
 
-  return (
-    <View>
-      {Leaders.map((leader) => {
-        <Text>
-          {leader.name}: {leader.highScore}
-        </Text>;
-      })}
-    </View>
-  );
+  const formatLeaderData = (players) => {
+    let leaderArray = [];
+    players.forEach((player) => {
+      leaderArray.push(player._data);
+    });
+    setLeaders(leaderArray);
+  };
+
+  if (Leaders && Leaders.length > 0) {
+    return (
+      <View style={{height: 300, width: '100%'}}>
+        {Leaders.map((leader) => {
+          <Text style={{fontSize: 24, color: 'white'}}>{leader.highScore}</Text>;
+        })}
+      </View>
+    );
+  }
+  if (Leaders === undefined) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
 };
 
 export default LeaderBoard;

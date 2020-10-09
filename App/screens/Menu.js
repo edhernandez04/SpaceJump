@@ -60,12 +60,12 @@ const Menu = (props) => {
       <View style={styles.fullScreenMenu}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
+        <LeaderBoard />
         {player.highScore === 0 ? (
           <Text>Go for a high score!</Text>
         ) : (
           <Text>Your Highest Score: {player.highScore}</Text>
         )}
-        <LeaderBoard />
         <Text style={styles.subHeadingText}>Select Your Ship</Text>
         <ShipSelector ship={ship} selectShip={selectShip} />
         <View style={{flexDirection: 'row'}}>
