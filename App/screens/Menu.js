@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   View,
   TextInput,
-  Button,
   Text,
   StyleSheet,
   StatusBar,
@@ -10,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ShipSelector from '../components/ShipSelector';
+import LeaderBoard from '../components/LeaderBoard';
 import firestore from '@react-native-firebase/firestore';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -27,7 +27,10 @@ const Menu = (props) => {
       .get();
     currentPlayer._docs && currentPlayer._docs.length > 0
       ? currentPlayer._docs[0]._data.password === password
-        ? updateUseState(currentPlayer._docs[0]._data, currentPlayer._docs[0]._ref._documentPath._parts[1])
+        ? updateUseState(
+            currentPlayer._docs[0]._data,
+            currentPlayer._docs[0]._ref._documentPath._parts[1],
+          )
         : alert('Incorrect Login Information')
       : addUser();
   };
@@ -44,9 +47,13 @@ const Menu = (props) => {
   };
 
   const updateUseState = (player, reference) => {
-    changePlayer(player)
-    changeRefId(reference)
-  }
+    changePlayer(player);
+    changeRefId(reference);
+  };
+
+  const removePlayer = () => {
+    changePlayer();
+  };
 
   if (player) {
     return (
@@ -58,18 +65,27 @@ const Menu = (props) => {
         ) : (
           <Text>Your Highest Score: {player.highScore}</Text>
         )}
+        <LeaderBoard />
         <Text style={styles.subHeadingText}>Select Your Ship</Text>
         <ShipSelector ship={ship} selectShip={selectShip} />
-        <Button
-          title="START"
-          onPress={() =>
-            props.navigation.navigate('Game', {
-              ship: ship,
-              player: player,
-              refId: refId,
-            })
-          }
-        />
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('Game', {
+                ship: ship,
+                player: player,
+                refId: refId,
+              })
+            }
+            style={styles.enterButton}>
+            <Text style={styles.subHeadingText}>START</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => removePlayer()}
+            style={styles.enterButton}>
+            <Text style={styles.subHeadingText}>BACK</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -142,10 +158,12 @@ const styles = StyleSheet.create({
     height: 250,
   },
   enterButton: {
+    width: 150,
     margin: 20,
     padding: 15,
     backgroundColor: 'tomato',
     borderRadius: 15,
+    alignItems: 'center',
   },
 });
 

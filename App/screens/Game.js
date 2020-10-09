@@ -73,10 +73,6 @@ const Game = (props) => {
       : null;
   };
 
-  const updateParamsForRecentScore = () => {
-    props.navigate
-  }
-
   const reset = () => {
     resetHazards();
     gameEngine.swap(setupWorld());

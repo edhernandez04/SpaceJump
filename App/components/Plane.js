@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, Animated} from 'react-native';
+import {Animated} from 'react-native';
 import Images from '../assets/Images';
 
 export default class Plane extends Component {
