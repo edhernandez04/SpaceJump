@@ -25,10 +25,11 @@ const LeaderBoard = () => {
   };
 
   if (Leaders && Leaders.length > 0) {
+      console.log(Leaders.map((leader) => `${leader.name}: ${leader.highScore}`))
     return (
-      <View style={{height: 300, width: '100%'}}>
+      <View style={{height: 200, width: '100%'}}>
         {Leaders.map((leader) => {
-          <Text style={{fontSize: 24, color: 'white'}}>{leader.highScore}</Text>;
+          <Text style={{fontSize: 24, color: 'white'}}>{leader.name}</Text>;
         })}
       </View>
     );
