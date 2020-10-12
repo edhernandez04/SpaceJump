@@ -7,7 +7,7 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-  ScrollView
+  Alert,
 } from 'react-native';
 import ShipSelector from '../components/ShipSelector';
 import LeaderBoard from '../components/LeaderBoard';
@@ -33,7 +33,18 @@ const Menu = (props) => {
             currentPlayer._docs[0]._ref._documentPath._parts[1],
           )
         : alert('Incorrect Login Information')
-      : addUser();
+      : Alert.alert(
+          'No Player Data',
+          'Would You Like to Create a New Player With This Information?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => addUser()},
+          ],
+        );
   };
 
   const addUser = async () => {
@@ -61,7 +72,7 @@ const Menu = (props) => {
       <View style={styles.fullScreenMenu}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
-        <LeaderBoard player={player}/>
+        <LeaderBoard player={player} />
         <ShipSelector ship={ship} selectShip={selectShip} />
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
@@ -94,37 +105,39 @@ const Menu = (props) => {
             style={styles.banner}
           />
           <StatusBar barStyle="light-content" />
-          <TextInput
-            color="white"
-            fontSize={48}
-            value={name}
-            onChangeText={changeName}
-            placeholder="ENTER NAME"
-            placeholderTextColor="white"
-            textAlign="center"
-            autoCapitalize="none"
-            borderBottomWidth={4}
-            maxLength={12}
-            style={{width: '75%', height: 100}}
-          />
-          <TextInput
-            color="white"
-            fontSize={24}
-            value={password}
-            onChangeText={changePassword}
-            placeholder="PASSWORD"
-            placeholderTextColor="white"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            textAlign="center"
-            borderBottomWidth={4}
-            style={{width: '75%', height: 100}}
-          />
-          <TouchableOpacity
-            onPress={() => checkUser()}
-            style={styles.enterButton}>
-            <Text style={styles.subHeadingText}>ENTER</Text>
-          </TouchableOpacity>
+          <View style={{width: '95%', alignItems: 'center'}}>
+            <TextInput
+              color="white"
+              fontSize={30}
+              value={name}
+              onChangeText={changeName}
+              placeholder="ENTER NAME"
+              placeholderTextColor="white"
+              textAlign="center"
+              autoCapitalize="none"
+              borderBottomWidth={2}
+              maxLength={12}
+              style={{width: '80%', height: 100}}
+            />
+            <TextInput
+              color="white"
+              fontSize={30}
+              value={password}
+              onChangeText={changePassword}
+              placeholder="PASSWORD"
+              placeholderTextColor="white"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              textAlign="center"
+              borderBottomWidth={2}
+              style={{width: '80%', height: 100}}
+            />
+            <TouchableOpacity
+              onPress={() => checkUser()}
+              style={styles.enterButton}>
+              <Text style={styles.subHeadingText}>ENTER</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -154,7 +167,7 @@ const styles = StyleSheet.create({
   },
   enterButton: {
     width: 150,
-    margin: 20,
+    margin: 50,
     padding: 15,
     backgroundColor: 'tomato',
     borderRadius: 15,

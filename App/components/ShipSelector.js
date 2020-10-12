@@ -48,20 +48,6 @@ const ShipSelector = (props) => {
           style={{height: 50, width: 100}}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          props.selectShip('millenium');
-        }}
-        style={
-          props.ship === 'millenium'
-            ? styles.selectedShipContainer
-            : styles.shipContainer
-        }>
-        <Image
-          source={require('../assets/millenium_ship3.png')}
-          style={{height: 50, width: 100}}
-        />
-      </TouchableOpacity>
       </ScrollView>
     </View>
   );

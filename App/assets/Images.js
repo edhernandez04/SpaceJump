@@ -3,7 +3,7 @@ export default Images = {
   floor: require('./floor.png'),
   hazardTop: require('./hazardTop.png'),
   hazardBody: require('./astroids.png'),
-  plane1: require(`./millenium_ship1.png`),
-  plane2: require(`./millenium_ship2.png`),
-  plane3: require(`./millenium_ship3.png`),
+  plane1: require(`./bessie_ship1.png`),
+  plane2: require(`./bessie_ship2.png`),
+  plane3: require(`./bessie_ship3.png`),
 };
