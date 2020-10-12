@@ -64,7 +64,7 @@ const Menu = (props) => {
         {player.highScore === 0 ? (
           <Text>Go for a high score!</Text>
         ) : (
-          <Text>Your Highest Score: {player.highScore}</Text>
+          <Text style={styles.subHeadingText}>Your Highest Score: {player.highScore}</Text>
         )}
         <Text style={styles.subHeadingText}>Select Your Ship</Text>
         <ShipSelector ship={ship} selectShip={selectShip} />
