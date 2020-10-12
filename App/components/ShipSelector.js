@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const ShipSelector = (props) => {
   return (
     <View style={styles.selectorContainer}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <TouchableOpacity
         onPress={() => {
           props.selectShip('tiny');
@@ -33,6 +34,35 @@ const ShipSelector = (props) => {
           style={{height: 50, width: 100}}
         />
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          props.selectShip('bessie');
+        }}
+        style={
+          props.ship === 'bessie'
+            ? styles.selectedShipContainer
+            : styles.shipContainer
+        }>
+        <Image
+          source={require('../assets/bessie_ship3.png')}
+          style={{height: 50, width: 100}}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          props.selectShip('millenium');
+        }}
+        style={
+          props.ship === 'millenium'
+            ? styles.selectedShipContainer
+            : styles.shipContainer
+        }>
+        <Image
+          source={require('../assets/millenium_ship3.png')}
+          style={{height: 50, width: 100}}
+        />
+      </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
