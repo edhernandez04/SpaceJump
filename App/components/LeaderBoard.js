@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
-const LeaderBoard = () => {
+const LeaderBoard = (props) => {
   useEffect(() => {
     getLeaderData();
   }, []);
@@ -21,17 +21,49 @@ const LeaderBoard = () => {
     players.forEach((player) => {
       leaderArray.push(player._data);
     });
-    setLeaders(leaderArray);
+    leaderArray.sort((a, b) => (b.highScore > a.highScore ? 1 : -1));
+    setLeaders(leaderArray.splice(0, 10));
   };
 
   if (Leaders && Leaders.length > 0) {
     return (
-      <View style={{height: 200, width: '100%'}}>
+      <View
+        style={{
+          margin: 20,
+          width: '80%',
+          backgroundColor: 'gray',
+          padding: 20,
+          borderRadius: 10,
+        }}>
+        <Text style={{alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>
+          LEADERBOARD
+        </Text>
         {Leaders.map((leader) => {
           return (
-            <View key={leader.name} style={{justifyContent: 'center', flexDirection: 'row'}}>
-              <Text style={{fontSize: 24, color: 'white'}}>{leader.name}:</Text>
-          <Text style={{fontSize: 24, color: 'cornflowerblue'}}> {leader.highScore}</Text>
+            <View
+              key={leader.name}
+              style={
+                props.player.name === leader.name
+                  ? {
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      borderBottomColor: 'limegreen',
+                      borderBottomWidth: 1,
+                      backgroundColor: 'black',
+                    }
+                  : {
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      borderBottomColor: 'limegreen',
+                      borderBottomWidth: 1,
+                    }
+              }>
+              <Text style={{fontSize: 24, color: 'white'}}>
+                {Leaders.indexOf(leader) + 1}. {leader.name}
+              </Text>
+              <Text style={{fontSize: 24, color: 'chartreuse'}}>
+                {leader.highScore}
+              </Text>
             </View>
           );
         })}

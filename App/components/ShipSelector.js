@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   selectorContainer: {
     margin: 20,
     flexDirection: 'row',
+    backgroundColor: 'grey',
+    width: '100%'
   },
   shipContainer: {
     height: 100,
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 120,
     margin: 10,
-    backgroundColor: 'tomato',
+    backgroundColor: 'limegreen',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,

@@ -7,6 +7,7 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import ShipSelector from '../components/ShipSelector';
 import LeaderBoard from '../components/LeaderBoard';
@@ -60,13 +61,7 @@ const Menu = (props) => {
       <View style={styles.fullScreenMenu}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
-        <LeaderBoard />
-        {player.highScore === 0 ? (
-          <Text>Go for a high score!</Text>
-        ) : (
-          <Text style={styles.subHeadingText}>Your Highest Score: {player.highScore}</Text>
-        )}
-        <Text style={styles.subHeadingText}>Select Your Ship</Text>
+        <LeaderBoard player={player}/>
         <ShipSelector ship={ship} selectShip={selectShip} />
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
