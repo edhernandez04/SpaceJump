@@ -37,11 +37,7 @@ const Menu = (props) => {
           'No Player Data',
           'Would You Like to Create a New Player With This Information?',
           [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
             {text: 'OK', onPress: () => addUser()},
           ],
         );
@@ -167,7 +163,7 @@ const styles = StyleSheet.create({
   },
   enterButton: {
     width: 150,
-    margin: 50,
+    margin: 20,
     padding: 15,
     backgroundColor: 'tomato',
     borderRadius: 15,

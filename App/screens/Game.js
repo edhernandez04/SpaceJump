@@ -8,50 +8,55 @@ import Plane from '../components/Plane';
 import Floor from '../components/Floor';
 import Physics, {resetHazards} from '../util/physics';
 
-const setupWorld = () => {
-  let engine = Matter.Engine.create({enableSleeping: false});
-  let world = engine.world;
-  world.gravity.y = 0.0;
-  let plane = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH / 4,
-    Constants.MAX_HEIGHT / 2,
-    Constants.PLANE_WIDTH,
-    Constants.PLANE_HEIGHT,
-  );
-  let floor1 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH / 2,
-    Constants.MAX_HEIGHT,
-    Constants.MAX_WIDTH + 4,
-    50,
-    {isStatic: true},
-  );
-  let floor2 = Matter.Bodies.rectangle(
-    Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
-    Constants.MAX_HEIGHT,
-    Constants.MAX_WIDTH + 4,
-    50,
-    {isStatic: true},
-  );
-
-  Matter.World.add(world, [floor1, floor2, plane]);
-
-  Matter.Events.on(engine, 'collisionStart', (event) => {
-    let pairs = event.pairs;
-    gameEngine.dispatch({type: 'game-over'});
-  });
-
-  return {
-    physics: {engine: engine, world: world},
-    plane: {body: plane, pose: 1, renderer: Plane},
-    floor1: {body: floor1, renderer: Floor},
-    floor2: {body: floor2, renderer: Floor},
-  };
-};
-
-let gameEngine = null;
-let entities = setupWorld();
-
 const Game = (props) => {
+  const setupWorld = () => {
+    let engine = Matter.Engine.create({enableSleeping: false});
+    let world = engine.world;
+    world.gravity.y = 0.0;
+    let plane = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH / 4,
+      Constants.MAX_HEIGHT / 2,
+      Constants.PLANE_WIDTH,
+      Constants.PLANE_HEIGHT,
+    );
+    let floor1 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH / 2,
+      Constants.MAX_HEIGHT,
+      Constants.MAX_WIDTH + 4,
+      50,
+      {isStatic: true},
+    );
+    let floor2 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
+      Constants.MAX_HEIGHT,
+      Constants.MAX_WIDTH + 4,
+      50,
+      {isStatic: true},
+    );
+
+    Matter.World.add(world, [floor1, floor2, plane]);
+
+    Matter.Events.on(engine, 'collisionStart', (event) => {
+      let pairs = event.pairs;
+      gameEngine.dispatch({type: 'game-over'});
+    });
+
+    return {
+      physics: {engine: engine, world: world},
+      plane: {
+        body: plane,
+        pose: 1,
+        renderer: Plane,
+        ship: props.route.params.ship,
+      },
+      floor1: {body: floor1, renderer: Floor},
+      floor2: {body: floor2, renderer: Floor},
+    };
+  };
+
+  let gameEngine = null;
+  let entities = setupWorld();
+
   const [running, flipGameState] = useState(true);
   const [score, addToScore] = useState(0);
 

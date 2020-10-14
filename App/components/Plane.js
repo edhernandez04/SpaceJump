@@ -20,8 +20,8 @@ export default class Plane extends Component {
       outputRange: ['-20deg', '0deg', '15deg', '65deg'],
       extrapolate: 'clamp',
     });
-    
-    let image = Images['plane' + this.props.pose];
+
+    let image = Images[this.props.ship + this.props.pose];
 
     return (
       <Animated.Image
