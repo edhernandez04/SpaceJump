@@ -73,11 +73,13 @@ const Menu = (props) => {
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             onPress={() =>
-              props.navigation.navigate('Game', {
-                ship: ship,
-                player: player,
-                refId: refId,
-              })
+              ship
+                ? props.navigation.navigate('Game', {
+                    ship: ship,
+                    player: player,
+                    refId: refId,
+                  })
+                : alert('Please Select A Ship Before Launching')
             }
             style={styles.enterButton}>
             <Text style={styles.subHeadingText}>START</Text>
