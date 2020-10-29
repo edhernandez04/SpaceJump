@@ -9,7 +9,6 @@ import Floor from '../components/Floor';
 import Physics, {resetHazards} from '../util/physics';
 
 const Game = (props) => {
-  let gameEngine = null;
   const setupWorld = () => {
     let engine = Matter.Engine.create({enableSleeping: false});
     let world = engine.world;
