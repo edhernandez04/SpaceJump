@@ -21,6 +21,7 @@
 		8CF9A3ABF4BFF0727A01B32B /* libPods-SpaceJump-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C50FAC8C65CA47A1852A415 /* libPods-SpaceJump-tvOSTests.a */; };
 		A9CED60D79024AD833E7A366 /* libPods-SpaceJump.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7D864EC731AE34851A06EA /* libPods-SpaceJump.a */; };
 		C01B8C1DFD88E3AC37315800 /* libPods-SpaceJump-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 761400C3C0AB6BB5EFED53EA /* libPods-SpaceJump-tvOS.a */; };
+		C9E061C1256C815600AD1B0C /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = C9E061C0256C815600AD1B0C /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		A47A68A5136C19EC8C2C4471 /* Pods-SpaceJump-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpaceJump-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SpaceJump-tvOS/Pods-SpaceJump-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AF7D864EC731AE34851A06EA /* libPods-SpaceJump.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpaceJump.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B65913E6795E7F136879B9 /* Pods-SpaceJump-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpaceJump-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-SpaceJump-tvOSTests/Pods-SpaceJump-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C9E061C0256C815600AD1B0C /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = SpaceJump/main.jsbundle; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDD448730FC7B4804B2C3618 /* Pods-SpaceJump.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpaceJump.debug.xcconfig"; path = "Target Support Files/Pods-SpaceJump/Pods-SpaceJump.debug.xcconfig"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* SpaceJump */ = {
 			isa = PBXGroup;
 			children = (
+				C9E061C0256C815600AD1B0C /* main.jsbundle */,
 				26085662252BDA7A00545787 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -346,6 +349,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				26085663252BDA7A00545787 /* GoogleService-Info.plist in Resources */,
+				C9E061C1256C815600AD1B0C /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,7 +373,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -379,7 +383,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
