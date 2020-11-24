@@ -60,7 +60,7 @@ const Menu = (props) => {
   };
 
   const removePlayer = () => {
-    changePlayer();
+    changePlayer(undefined);
   };
 
   if (player) {
