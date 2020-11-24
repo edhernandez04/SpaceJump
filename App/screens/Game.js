@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import {GameEngine} from 'react-native-game-engine';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { GameEngine } from 'react-native-game-engine';
 import Matter from 'matter-js';
 import firestore from '@react-native-firebase/firestore';
 import Constants from '../util/constants';
 import Plane from '../components/Plane';
 import Floor from '../components/Floor';
-import Physics, {resetHazards} from '../util/physics';
+import Physics, { resetHazards } from '../util/physics';
 
 const Game = (props) => {
   const setupWorld = () => {
-    let engine = Matter.Engine.create({enableSleeping: false});
+    let engine = Matter.Engine.create({ enableSleeping: false });
     let world = engine.world;
     world.gravity.y = 0.0;
     let plane = Matter.Bodies.rectangle(
@@ -24,33 +24,33 @@ const Game = (props) => {
       Constants.MAX_HEIGHT,
       Constants.MAX_WIDTH + 4,
       50,
-      {isStatic: true},
+      { isStatic: true },
     );
     let floor2 = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
       Constants.MAX_HEIGHT,
       Constants.MAX_WIDTH + 4,
       50,
-      {isStatic: true},
+      { isStatic: true },
     );
 
     Matter.World.add(world, [floor1, floor2, plane]);
 
     Matter.Events.on(engine, 'collisionStart', (event) => {
       let pairs = event.pairs;
-      gameEngine.dispatch({type: 'game-over'});
+      gameEngine.dispatch({ type: 'game-over' });
     });
 
     return {
-      physics: {engine: engine, world: world},
+      physics: { engine: engine, world: world },
       plane: {
         body: plane,
         pose: 1,
         renderer: Plane,
         ship: props.route.params.ship,
       },
-      floor1: {body: floor1, renderer: Floor},
-      floor2: {body: floor2, renderer: Floor},
+      floor1: { body: floor1, renderer: Floor },
+      floor2: { body: floor2, renderer: Floor },
     };
   };
 
@@ -71,9 +71,9 @@ const Game = (props) => {
   const updatePlayerOnGameOver = async () => {
     score > props.route.params.player.highScore
       ? await firestore()
-          .collection('users')
-          .doc(props.route.params.refId)
-          .update({highScore: score})
+        .collection('users')
+        .doc(props.route.params.refId)
+        .update({ highScore: score })
       : null;
   };
 
@@ -87,8 +87,8 @@ const Game = (props) => {
   return (
     <View style={styles.container}>
       <Image
-        style={{width: Constants.MAX_WIDTH, height: Constants.MAX_HEIGHT}}
-        source={require('../assets/Space_1.png')}
+        style={{ width: Constants.MAX_WIDTH, height: Constants.MAX_HEIGHT }}
+        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/space-jump-f89fa.appspot.com/o/Space_1.png?alt=media&token=4a0cb26b-d699-4f06-9751-8740100ddfa5' }}
       />
       <GameEngine
         ref={(ref) => (gameEngine = ref)}
@@ -100,7 +100,7 @@ const Game = (props) => {
       <Text style={styles.gameScore}>{score}</Text>
       {!running && (
         <View style={styles.fullScreenButton}>
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Text style={styles.gameOverText}>GAME OVER</Text>
             <Text style={styles.gameOverText}>{score}</Text>
           </View>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     top: 50,
     left: Constants.MAX_WIDTH / 2 - 30,
     textShadowColor: '#444',
-    textShadowOffset: {width: 2, hegj: 2},
+    textShadowOffset: { width: 2, hegj: 2 },
     textShadowRadius: 2,
   },
   fullScreenButton: {

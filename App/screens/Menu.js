@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -12,7 +12,7 @@ import {
 import ShipSelector from '../components/ShipSelector';
 import LeaderBoard from '../components/LeaderBoard';
 import firestore from '@react-native-firebase/firestore';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Menu = (props) => {
   const [player, changePlayer] = useState();
@@ -29,27 +29,27 @@ const Menu = (props) => {
     currentPlayer._docs && currentPlayer._docs.length > 0
       ? currentPlayer._docs[0]._data.password === password
         ? updateUseState(
-            currentPlayer._docs[0]._data,
-            currentPlayer._docs[0]._ref._documentPath._parts[1],
-          )
+          currentPlayer._docs[0]._data,
+          currentPlayer._docs[0]._ref._documentPath._parts[1],
+        )
         : alert('Incorrect Login Information')
       : Alert.alert(
-          'No Player Data',
-          'Would You Like to Create a New Player With This Information?',
-          [
-            {text: 'Cancel', onPress: () => null, style: 'cancel'},
-            {text: 'OK', onPress: () => addUser()},
-          ],
-        );
+        'No Player Data',
+        'Would You Like to Create a New Player With This Information?',
+        [
+          { text: 'Cancel', onPress: () => null, style: 'cancel' },
+          { text: 'OK', onPress: () => addUser() },
+        ],
+      );
   };
 
   const addUser = async () => {
     name && password
       ? await firestore().collection('users').add({
-          name: name,
-          password: password,
-          highScore: 0,
-        })
+        name: name,
+        password: password,
+        highScore: 0,
+      })
       : alert('Missing Login Information');
     checkUser();
   };
@@ -70,15 +70,15 @@ const Menu = (props) => {
         <Text style={styles.subHeadingText}>Welcome, {player.name}</Text>
         <LeaderBoard player={player} />
         <ShipSelector ship={ship} selectShip={selectShip} />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() =>
               ship
                 ? props.navigation.navigate('Game', {
-                    ship: ship,
-                    player: player,
-                    refId: refId,
-                  })
+                  ship: ship,
+                  player: player,
+                  refId: refId,
+                })
                 : alert('Please Select A Ship Before Launching')
             }
             style={styles.enterButton}>
@@ -99,11 +99,11 @@ const Menu = (props) => {
       <SafeAreaView>
         <View style={styles.fullScreenMenu}>
           <Image
-            source={require('../assets/banner.png')}
+            source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/space-jump-f89fa.appspot.com/o/banner.png?alt=media&token=0603ab4a-0cd0-4423-9982-e9efa0a7100e' }}
             style={styles.banner}
           />
           <StatusBar barStyle="light-content" />
-          <View style={{width: '95%', alignItems: 'center'}}>
+          <View style={{ width: '95%', alignItems: 'center' }}>
             <TextInput
               color="white"
               fontSize={30}
@@ -115,7 +115,7 @@ const Menu = (props) => {
               autoCapitalize="none"
               borderBottomWidth={2}
               maxLength={12}
-              style={{width: '80%', height: 100}}
+              style={{ width: '80%', height: 100 }}
             />
             <TextInput
               color="white"
@@ -128,7 +128,7 @@ const Menu = (props) => {
               secureTextEntry={true}
               textAlign="center"
               borderBottomWidth={2}
-              style={{width: '80%', height: 100}}
+              style={{ width: '80%', height: 100 }}
             />
             <TouchableOpacity
               onPress={() => checkUser()}
