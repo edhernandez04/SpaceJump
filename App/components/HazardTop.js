@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Image} from 'react-native';
+import React, { Component } from 'react';
+import { Image } from 'react-native';
 import Images from '../assets/Images';
 
 export default class HazardTop extends Component {
@@ -19,7 +19,7 @@ export default class HazardTop extends Component {
           height: height,
         }}
         resizeMode='stretch'
-        source={Images.hazardTop}
+        source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/space-jump-f89fa.appspot.com/o/hazardTop.png?alt=media&token=0dc756b3-3a3c-495b-b6be-5fff2147f647' }}
       />
     );
   }

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Image } from 'react-native';
 import Images from '../assets/Images';
 
 export default class Hazard extends Component {
@@ -25,9 +25,9 @@ export default class Hazard extends Component {
         {Array.apply(null, Array(hazardIterations)).map((element, index) => {
           return (
             <Image
-              style={{width: width, height: hazardHeight}}
+              style={{ width: width, height: hazardHeight }}
               key={index}
-              source={Images.hazardBody}
+              source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/space-jump-f89fa.appspot.com/o/astroids.png?alt=media&token=52ee01e9-440b-4462-9315-c23ca527b17f' }}
               resizeMode="stretch"
             />
           );

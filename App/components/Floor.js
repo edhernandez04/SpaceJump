@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {View, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Image } from 'react-native';
 import Images from '../assets/Images';
 
 export default class Floor extends Component {
@@ -22,10 +22,10 @@ export default class Floor extends Component {
           overflow: 'hidden',
           flexDirection: 'row'
         }}>
-            {Array.apply(null, Array(imageRepeater)).map((element, index) => {
-                return <Image style={{width: height, height: height}} key={index} source={Images.floor}/>
-            })}
-        </View>
+        {Array.apply(null, Array(imageRepeater)).map((element, index) => {
+          return <Image style={{ width: height, height: height }} key={index} source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/space-jump-f89fa.appspot.com/o/floor.png?alt=media&token=d32f695f-b31b-4d92-899e-01715f308ad2' }} />
+        })}
+      </View>
     );
   }
 }
